@@ -18,7 +18,6 @@ export default function NavigationBar() {
             variant="h6"
             component="div"
             sx={{
-              color: "#96B6C5",
               flexGrow: 1,
               fontFamily: "Tangerine",
               fontSize: "38px",
@@ -26,7 +25,9 @@ export default function NavigationBar() {
               paddingTop: "2.5vh",
             }}
           >
-            Story of Hands
+            <a href="/" style={{ color: "#96B6C5", textDecoration: "none" }}>
+              Story of Hands
+            </a>
           </Typography>
           <Box
             sx={{

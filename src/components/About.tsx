@@ -13,10 +13,26 @@ export default function () {
       }}
     >
       <NavigationBar></NavigationBar>
-      <h1
+      <p
         style={{
           color: "#96B6C5",
           paddingTop: "6vh",
+          paddingRight: "47vh",
+          textAlign: "right",
+          fontFamily: "Gloria Hallelujah",
+          fontSize: "24px",
+        }}
+      >
+        <a
+          href="/username"
+          style={{ textDecoration: "underline", color: "#96B6C5" }}
+        >
+          → start
+        </a>
+      </p>
+      <h1
+        style={{
+          color: "#96B6C5",
           textAlign: "center",
           fontFamily: "Gloria Hallelujah",
           fontSize: "32px",
