@@ -8,7 +8,6 @@ import { useState } from "react";
 // TODO: add skip button to create an initial about page
 export default function Mode() {
   const [mode, setMode] = useState(0);
-  console.log(mode);
 
   return (
     <Box

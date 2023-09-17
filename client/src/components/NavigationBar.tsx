@@ -5,8 +5,66 @@ import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
+import MenuItem from "@mui/material/MenuItem";
+import Menu from "@mui/material/Menu";
+import { IconButton } from "@mui/material";
+import MoreIcon from "@mui/icons-material/MoreVert";
 
 export default function NavigationBar() {
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const isMenuOpen = Boolean(anchorEl);
+
+  const handleProfileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+  };
+
+  const menuId = "primary-game-mode-menu";
+  const renderMenu = (
+    <Menu
+      anchorEl={anchorEl}
+      anchorOrigin={{
+        vertical: "top",
+        horizontal: "right",
+      }}
+      id={menuId}
+      keepMounted
+      transformOrigin={{
+        vertical: "top",
+        horizontal: "right",
+      }}
+      open={isMenuOpen}
+      onClose={handleMenuClose}
+      sx={{
+        "& .MuiMenu-paper": {
+          backgroundColor: "#F1F0E8",
+        },
+      }}
+    >
+      <MenuItem
+        onClick={handleMenuClose}
+        sx={{
+          color: "#96B6C5",
+          fontFamily: "Gloria Hallelujah",
+        }}
+      >
+        Create a Hand Series
+      </MenuItem>
+      <MenuItem
+        onClick={handleMenuClose}
+        sx={{
+          color: "#96B6C5",
+          fontFamily: "Gloria Hallelujah",
+        }}
+      >
+        Write a Story
+      </MenuItem>
+    </Menu>
+  );
+
   return (
     <Box>
       <AppBar
@@ -41,7 +99,6 @@ export default function NavigationBar() {
           >
             <Button
               href="/login"
-              color="inherit"
               sx={{
                 color: "#96B6C5",
                 fontFamily: "Gloria Hallelujah",
@@ -53,7 +110,6 @@ export default function NavigationBar() {
             </Button>
             <Button
               href="/about"
-              color="inherit"
               sx={{
                 color: "#96B6C5",
                 fontFamily: "Gloria Hallelujah",
@@ -63,9 +119,24 @@ export default function NavigationBar() {
             >
               About
             </Button>
+            <IconButton
+              size="large"
+              edge="end"
+              aria-label="display game modes"
+              aria-controls={menuId}
+              aria-haspopup="true"
+              onClick={handleProfileMenuOpen}
+            >
+              <MoreIcon
+                sx={{
+                  color: "#96B6C5",
+                }}
+              />
+            </IconButton>
           </Box>
         </Toolbar>
       </AppBar>
+      {renderMenu}
     </Box>
   );
 }
