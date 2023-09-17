@@ -6,6 +6,7 @@ import About from "./components/About";
 import Username from "./components/Username";
 import Mode from "./components/Mode";
 import CreateDrawingSeries from "./components/CreateDrawingSeries";
+import WriteAStory from "./components/WriteAStory";
 
 function App() {
   return (
@@ -19,6 +20,10 @@ function App() {
           path="/createdrawingseries"
           element={<CreateDrawingSeries></CreateDrawingSeries>}
         />
+        <Route
+          path="/writeastory"
+          element={<WriteAStory></WriteAStory>}
+        ></Route>
       </Routes>
     </BrowserRouter>
   );

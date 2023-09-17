@@ -2,12 +2,13 @@ import "./fonts.css";
 import Box from "@mui/material/Box";
 import NavigationBar from "./NavigationBar";
 import NextButton from "./NextButton";
-import { ImageList, ImageListItem, TextField } from "@mui/material";
+import { TextField } from "@mui/material";
 import DragNDropImages from "./DragNDropImages";
 import { getBase64 } from "./DragNDropImages";
 import { useState } from "react";
 import { UploadFile, message } from "antd";
 import { RcFile } from "antd/es/upload";
+import HorizontalImageList from "./HorizontalImageList";
 
 const baseUrl: string = "http://localhost:5000";
 
@@ -75,36 +76,7 @@ export default function CreateDrawingSeries() {
           onClick: handleSubmitImageSeries,
         }}
       ></NextButton>
-      <div
-        style={{
-          display: "flex",
-          flexWrap: "wrap",
-          justifyContent: "space-around",
-          overflow: "hidden",
-          backgroundColor: "#F1F0E8",
-          marginLeft: "50vh",
-          marginRight: "50vh",
-          marginTop: "5vh",
-        }}
-      >
-        <ImageList
-          style={{ flexWrap: "nowrap", overflowX: "auto" }}
-          cols={1}
-          rowHeight={110}
-        >
-          、
-          <ImageListItem sx={{ display: "flex", flexDirection: "row" }}>
-            {imageData.map((image, index) => (
-              <img
-                key={index}
-                src={image}
-                alt={`hand-drawing-${index}`}
-                style={{ marginRight: "1vh" }}
-              />
-            ))}
-          </ImageListItem>
-        </ImageList>
-      </div>
+      <HorizontalImageList props={{ imageData }}></HorizontalImageList>
       <DragNDropImages props={{ fileList, setFileList }}></DragNDropImages>
       <div
         style={{

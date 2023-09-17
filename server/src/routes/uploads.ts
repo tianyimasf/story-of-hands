@@ -3,6 +3,7 @@ import { Image } from "../model/image.js";
 import { IImage } from "../model/image.js";
 import { HandSeries, IHandSeries } from "../model/handSeries.js";
 import mongodb from "mongodb";
+import { ObjectId } from "mongodb";
 
 const router = express.Router();
 
@@ -91,5 +92,26 @@ router.get("/", async (req, res) => {
 
   res.status(200).json({ errored: false, handSeriesDataGrids });
 });
+
+router.get("/getOne", async (req, res) => {
+  const handSeriesId = req.query.id as string;
+
+  const handSeries = await HandSeries.findOne({
+    _id: new ObjectId(handSeriesId),
+  });
+
+  if (!handSeries)
+    res.status(200).json({ errored: true, message: "Invalid Hand Series Id." });
+
+  handSeries!.images = await Promise.all(
+    handSeries!.images.map(
+      async (image) => (await Image.findOne({ _id: image })) as IImage
+    )
+  );
+
+  res.status(200).json({ errored: false, handSeries });
+});
+
+// TODO: upload stories
 
 export default router;

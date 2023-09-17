@@ -62,6 +62,15 @@ export default function NavigationBar() {
       >
         Write a Story
       </MenuItem>
+      <MenuItem
+        onClick={handleMenuClose}
+        sx={{
+          color: "#96B6C5",
+          fontFamily: "Gloria Hallelujah",
+        }}
+      >
+        My Hand Series
+      </MenuItem>
     </Menu>
   );
 

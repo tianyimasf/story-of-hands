@@ -3,8 +3,6 @@ import Box from "@mui/material/Box";
 import NavigationBar from "./NavigationBar";
 import NextButton from "./NextButton";
 import React from "react";
-import { useState } from "react";
-import { IHandSeries } from "./types";
 import { message } from "antd";
 
 const baseUrl: string = "http://localhost:5000";
