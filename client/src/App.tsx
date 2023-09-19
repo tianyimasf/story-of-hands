@@ -7,6 +7,7 @@ import Username from "./components/Username";
 import Mode from "./components/Mode";
 import CreateDrawingSeries from "./components/CreateDrawingSeries";
 import WriteAStory from "./components/WriteAStory";
+import HandSeries from "./components/HandSeries";
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
           path="/writeastory"
           element={<WriteAStory></WriteAStory>}
         ></Route>
+        <Route path="/handseries" element={<HandSeries></HandSeries>}></Route>
       </Routes>
     </BrowserRouter>
   );

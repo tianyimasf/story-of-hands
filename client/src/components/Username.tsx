@@ -20,7 +20,7 @@ export interface APIIUser {
 }
 
 const baseUrl: string = "http://localhost:5000";
-// TODO: add skip button to create an initial about page
+// TODO: change the workflow to ask if they want to create an account first
 export default function () {
   const [username, setUserName] = useState<string | null>(null);
 
@@ -39,6 +39,7 @@ export default function () {
         const user = await response.json();
         localStorage.setItem("username", JSON.stringify(user.username));
         localStorage.setItem("token", JSON.stringify(user.token));
+        localStorage.setItem("user_id", JSON.stringify(user._id));
       }
     );
   };
@@ -63,12 +64,14 @@ export default function () {
         style={{
           color: "#96B6C5",
           paddingLeft: "60vh",
+          paddingRight: "60vh",
           paddingTop: "7vh",
           fontFamily: "Gloria Hallelujah",
           fontSize: "24px",
         }}
       >
-        Please enter your username:
+        Please enter your username (it will be displayed whenever other people
+        see your hand series):
       </p>
       <TextField
         required

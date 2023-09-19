@@ -7,18 +7,20 @@ import { message } from "antd";
 import { IHandSeries, IImage } from "./types";
 import HorizontalImageList from "./HorizontalImageList";
 import { TextField } from "@mui/material";
+import HandSeriesBasicInfo from "./HandSeriesBasicInfo";
 
 const baseUrl: string = "http://localhost:5000";
 
-interface writeAStoryStates {
+interface WriteAStoryStates {
   handSeriesId: string | null;
   handSeries: IHandSeries | null;
   storyName: string;
   story: string;
+  writerName: string;
 }
 
 // TODO: add skip button to create an initial about page
-class WriteAStory extends React.Component<{}, writeAStoryStates> {
+class WriteAStory extends React.Component<{}, WriteAStoryStates> {
   constructor(props: {}) {
     super(props);
     this.state = {
@@ -26,6 +28,7 @@ class WriteAStory extends React.Component<{}, writeAStoryStates> {
       handSeries: null,
       storyName: "",
       story: "",
+      writerName: "",
     };
   }
 
@@ -41,7 +44,7 @@ class WriteAStory extends React.Component<{}, writeAStoryStates> {
     }
 
     this.setState({ handSeriesId });
-    fetch(baseUrl + `/api/upload/getOne?id=${this.state.handSeriesId}`, {
+    fetch(baseUrl + `/api/upload/getOne?id=${handSeriesId}`, {
       headers: { ContentType: "application/json" },
     }).then(async (response) => {
       const result = await response.json();
@@ -49,34 +52,42 @@ class WriteAStory extends React.Component<{}, writeAStoryStates> {
         message.error(result.message);
       } else {
         this.setState({ handSeries: result.handSeries });
+        console.log(this.state.handSeries, result.handSeries);
       }
     });
   }
 
+  renderSubmitButton = () => {
+    return (
+      <p
+        style={{
+          color: "#96B6C5",
+          paddingTop: "4vh",
+          paddingRight: "47vh",
+          textAlign: "right",
+          fontFamily: "Gloria Hallelujah",
+          fontSize: "24px",
+        }}
+      >
+        <a href="#" style={{ textDecoration: "underline", color: "#96B6C5" }}>
+          → Submit
+        </a>
+      </p>
+    );
+  };
+
   renderHandSeriesAndStoryForm = () => {
+    console.log(this.state.handSeries);
     return (
       <div>
-        <HorizontalImageList
-          props={{
-            imageData: this.state.handSeries!.images.map((image) => image.data),
-          }}
-        ></HorizontalImageList>
-        <p>Arranger: {this.state.handSeries?.authorName}</p>
-        <p>
-          Series Name:
-          {this.state.handSeries?.name ??
-            "the arranger didn't give it a name😳"}
-        </p>
-        <p>
-          Series Description:{" "}
-          {this.state.handSeries?.desc ??
-            "the arranger didn't give it a description🙏"}
-        </p>
+        <HandSeriesBasicInfo
+          props={{ handSeries: this.state.handSeries! }}
+        ></HandSeriesBasicInfo>
         <div
           style={{
             display: "flex",
             flexDirection: "column",
-            marginRight: "50vh",
+            marginRight: "47vh",
           }}
         >
           <TextField
@@ -84,10 +95,10 @@ class WriteAStory extends React.Component<{}, writeAStoryStates> {
             id="standard-required"
             defaultValue="Story Name"
             size="small"
-            variant="standard"
+            variant="outlined"
             sx={{
-              marginLeft: "50vh",
-              marginTop: "4vh",
+              marginLeft: "47vh",
+              marginTop: "1vh",
               input: { color: "#ADC4CE" },
             }}
             InputProps={{
@@ -101,12 +112,34 @@ class WriteAStory extends React.Component<{}, writeAStoryStates> {
           <TextField
             required
             id="standard-required"
-            defaultValue="Story Content"
+            defaultValue="Storyline"
             size="small"
-            variant="standard"
+            variant="outlined"
             sx={{
-              marginLeft: "50vh",
-              marginTop: "4vh",
+              marginLeft: "47vh",
+              marginTop: "2vh",
+            }}
+            InputProps={{
+              style: {
+                fontFamily: "Gloria Hallelujah",
+                fontSize: "24px",
+                color: "#ADC4CE",
+              },
+            }}
+            multiline
+            rows={8}
+            maxRows={10}
+            onChange={(e) => this.setState({ story: e.target.value })}
+          />
+          <TextField
+            required
+            id="standard-required"
+            defaultValue="Your Username"
+            size="small"
+            variant="outlined"
+            sx={{
+              marginLeft: "47vh",
+              marginTop: "2vh",
               input: { color: "#ADC4CE" },
             }}
             InputProps={{
@@ -115,12 +148,10 @@ class WriteAStory extends React.Component<{}, writeAStoryStates> {
                 fontSize: "24px",
               },
             }}
-            multiline
-            rows={5}
-            maxRows={10}
-            onChange={(e) => this.setState({ story: e.target.value })}
+            onChange={(e) => this.setState({ writerName: e.target.value })}
           />
         </div>
+        {this.renderSubmitButton()}
       </div>
     );
   };
@@ -151,7 +182,7 @@ class WriteAStory extends React.Component<{}, writeAStoryStates> {
             href: "#",
           }}
         ></NextButton>
-        {this.state.handSeriesId
+        {this.state.handSeriesId && this.state.handSeries
           ? this.renderHandSeriesAndStoryForm()
           : this.renderErrorMessage()}
       </Box>

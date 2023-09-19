@@ -1,7 +1,7 @@
 import "./fonts.css";
 
 export interface NextButton {
-  href: string;
+  href?: string;
   onClick?: () => void;
 }
 

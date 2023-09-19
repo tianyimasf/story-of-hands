@@ -44,14 +44,20 @@ export default function NavigationBar() {
         },
       }}
     >
-      <MenuItem
-        onClick={handleMenuClose}
-        sx={{
-          color: "#96B6C5",
-          fontFamily: "Gloria Hallelujah",
-        }}
-      >
-        Create a Hand Series
+      <MenuItem onClick={handleMenuClose}>
+        <Typography
+          component="div"
+          sx={{
+            fontFamily: "Gloria Hallelujah",
+          }}
+        >
+          <a
+            href="/createdrawingseries"
+            style={{ textDecoration: "none", color: "#96B6C5" }}
+          >
+            Create Hand Series
+          </a>
+        </Typography>
       </MenuItem>
       <MenuItem
         onClick={handleMenuClose}

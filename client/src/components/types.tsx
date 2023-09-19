@@ -11,11 +11,12 @@ export interface IStory {
 }
 
 export interface IHandSeries {
+  _id: any;
   name: string;
   desc: string;
   images: IImage[];
   authorName: string;
   authorToken: string;
   authorEmail?: string;
-  story?: IStory[];
+  stories?: IStory[];
 }
