@@ -1,15 +1,17 @@
+import _ from "lodash";
 import express from "express";
 import { Image } from "../model/image.js";
 import { IImage } from "../model/image.js";
 import { HandSeries, IHandSeries } from "../model/handSeries.js";
 import mongodb from "mongodb";
 import { ObjectId } from "mongodb";
+import { IStory, Story } from "../model/story.js";
 
 const router = express.Router();
 
 router.post("/", async (req, res) => {
   // Handle the uploaded files
-  const { images, authorToken, authorName, name, desc } = req.body;
+  const { images, authorToken, authorName, name, desc, email } = req.body;
 
   const bulkImages: mongodb.AnyBulkWriteOperation<IImage>[] = [];
 
@@ -36,6 +38,7 @@ router.post("/", async (req, res) => {
       images: imageIds,
       authorToken,
       authorName,
+      authorEmail: email,
     };
     const result = await HandSeries.updateOne(
       { images: imageIds },
@@ -45,7 +48,7 @@ router.post("/", async (req, res) => {
     if (result.upsertedCount > 0) {
       newHandSeries = result.upsertedId;
     } else {
-      newHandSeries = await HandSeries.find({ images: imageIds }, { _id: 1 });
+      newHandSeries = await HandSeries.findOne(handSeriesObj, { _id: 1 });
     }
   } catch (err: unknown) {
     if (err instanceof Error) {
@@ -71,11 +74,19 @@ router.get("/", async (req, res) => {
     // populate the images used in the series
     const handSeriesPopulated: IHandSeries[] = await Promise.all(
       handSeries.map(async (oneHandSeries) => {
+        // populate images
         oneHandSeries.images = await Promise.all(
           oneHandSeries.images.map(
             async (image) => (await Image.findOne({ _id: image })) as IImage
           )
         );
+        // populate stories if not undefined/null
+        if (oneHandSeries.stories && oneHandSeries.stories.length > 0)
+          oneHandSeries.stories = await Promise.all(
+            oneHandSeries.stories.map(
+              async (story) => (await Story.findOne({ _id: story })) as IStory
+            )
+          );
         return oneHandSeries;
       })
     );
@@ -103,13 +114,15 @@ router.get("/getOne", async (req, res) => {
   if (!handSeries)
     res.status(200).json({ errored: true, message: "Invalid Hand Series Id." });
 
-  handSeries!.images = await Promise.all(
-    handSeries!.images.map(
-      async (image) => (await Image.findOne({ _id: image })) as IImage
-    )
+  const handSeriesClone = JSON.parse(JSON.stringify(handSeries));
+  const populatedImages = await Promise.all(
+    handSeries!.images.map(async (image) => {
+      const populatedImage = (await Image.findOne({ _id: image })) as IImage;
+      return populatedImage;
+    })
   );
-
-  res.status(200).json({ errored: false, handSeries });
+  handSeriesClone.images = populatedImages;
+  res.status(200).json({ errored: false, handSeries: handSeriesClone });
 });
 
 // TODO: upload stories
