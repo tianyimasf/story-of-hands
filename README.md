@@ -9,3 +9,5 @@ An experience to connect with family, friends and strangers by playing a little 
 ![hand series](https://github.com/tianyimasf/story-of-hands/assets/105022007/3347c90d-a93a-4138-aa26-3eef19187519)
 
 ![submit story](https://github.com/tianyimasf/story-of-hands/assets/105022007/60b713c3-59d0-4d50-a960-da638121d4b2)
+
+$W_{q}$
